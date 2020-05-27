@@ -3,20 +3,20 @@ services:
   - docker
 
 before_install:
-  - docker build -t faizan-anwer/react-test -f ./client/Dockerfile.dev ./client
+  - docker build -t faizan-anwer/react-test -f ./clients/Dockerfile.dev ./clients
 
   script:
     - docker run faizan-anwer/react-test npm test -- --coverage
 
   after_success:
-    - docker build -t faizan-anwer/multi-client ./client
+    - docker build -t faizan-anwer/multi-clients ./clients
     - docker build -t faizan-anwer/multi-nginx ./nginx
     - docker build -t faizan-anwer/multi-server ./server
     - docker build -t faizan-anwer/multi-worker ./worker
 
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
 
-  - docker push faizan-anwer/multi-client
+  - docker push faizan-anwer/multi-clients
   - docker push faizan-anwer/multi-nginx
   - docker push faizan-anwer/multi-server
   - docker push faizan-anwer/multi-worker
